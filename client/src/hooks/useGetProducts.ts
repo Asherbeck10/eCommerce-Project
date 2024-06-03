@@ -13,6 +13,7 @@ export const useGetProducts = () => {
       const response = await axios.get('/products', {
         headers,
       });
+      console.log(response.data);
       setProducts(response.data);
     } catch (error) {
       alert('ERROR:Failed to fetch products');

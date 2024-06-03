@@ -14,7 +14,7 @@ export default function Register() {
   const navigate = useNavigate();
   const { setIsAuthenticated } = useContext<IShopContext>(ShopContext);
 
-  const handleRegister = async (event: SyntheticEvent) => {
+  const handleLogin = async (event: SyntheticEvent) => {
     event.preventDefault();
     try {
       const response = await axios.post('/user/login', {
@@ -48,7 +48,7 @@ export default function Register() {
 
   return (
     <div className={styles.auth_container_login}>
-      <form onSubmit={handleRegister}>
+      <form onSubmit={handleLogin}>
         <h2>Login</h2>
         <div className={styles.form_group}>
           <label htmlFor="email">Email</label>
