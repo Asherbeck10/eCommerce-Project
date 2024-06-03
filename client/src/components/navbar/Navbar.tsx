@@ -9,7 +9,6 @@ import { IShopContext } from '../../models/interface';
 export default function Navbar() {
   const { availableMoney, userInfo, setIsAuthenticated, isAuthenticated } =
     useContext<IShopContext>(ShopContext);
-  console.log(userInfo);
   const logout = () => {
     setIsAuthenticated(false);
   };
