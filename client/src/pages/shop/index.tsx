@@ -8,7 +8,7 @@ export default function ShopPage() {
     <div className={styles.shope}>
       <div className={styles.products}>
         {/* Map through the products and render each product*/}
-        {products.map((product) => (
+        {products?.map((product) => (
           <Product product={product} />
         ))}
       </div>
