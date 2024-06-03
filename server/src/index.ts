@@ -35,11 +35,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 // Connect to MongoDB
 mongoose.connect(
-  `mongodb+srv://${username}:${password}@ecommerce.hotpp0j.mongodb.net/?retryWrites=true&w=majority&appName=ecommerce`,
-  {
-    tls: true,
-    tlsInsecure: false,
-  }
+  `mongodb+srv://${username}:${password}@ecommerce.hotpp0j.mongodb.net/ecommerce`
 );
 mongoose.connection.on('connected', () => {
   console.log('Connected to MongoDB');
