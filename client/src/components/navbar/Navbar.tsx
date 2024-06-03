@@ -37,7 +37,7 @@ export default function Navbar() {
           {userInfo.firstName} {userInfo.lastName}: {userInfo.email}
         </span>
       </div>
-      <span>£{availableMoney.toFixed(2)}</span>
+      <span>£{availableMoney?.toFixed(2)}</span>
     </div>
   );
 }
