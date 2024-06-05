@@ -18,6 +18,11 @@ export interface IShopContext {
   isAuthenticated: boolean;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   userInfo: { firstName: string; lastName: string; email: string };
+  googleUserInformation: { googleUserName: string; googleUserEmail: string };
+  setGoogleUserInformation: (googleUserInformation: {
+    googleUserName: string;
+    googleUserEmail: string;
+  }) => void;
 }
 
 export interface IProps {

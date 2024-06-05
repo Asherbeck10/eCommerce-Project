@@ -16,6 +16,7 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
@@ -27,7 +28,11 @@ const provider = new GoogleAuthProvider();
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(authRegWithGoogle, provider);
-    console.log(result.user);
+    // Get user information
+    const user = result.user;
+    const googleUserName = user.displayName;
+    const googleUserEmail = user.email;
+    return { googleUserName, googleUserEmail };
   } catch (error) {
     console.log(error.message);
   }

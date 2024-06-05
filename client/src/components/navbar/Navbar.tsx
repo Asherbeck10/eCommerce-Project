@@ -7,11 +7,18 @@ import { ShopContext } from '../../context/shop-context';
 import { IShopContext } from '../../models/interface';
 
 export default function Navbar() {
-  const { availableMoney, userInfo, setIsAuthenticated, isAuthenticated } =
-    useContext<IShopContext>(ShopContext);
+  const {
+    availableMoney,
+    userInfo,
+    setIsAuthenticated,
+    isAuthenticated,
+    googleUserInformation,
+  } = useContext<IShopContext>(ShopContext);
   const logout = () => {
     setIsAuthenticated(false);
   };
+  const googleUserName = googleUserInformation.googleUserName;
+  const googleUserEmail = googleUserInformation.googleUserEmail;
   return (
     <div className={styles.navbar}>
       <div>
@@ -33,7 +40,9 @@ export default function Navbar() {
       </div>
       <div>
         <span>
-          {userInfo.firstName} {userInfo.lastName}: {userInfo.email}
+          {googleUserName
+            ? `${googleUserName}: ${googleUserEmail}`
+            : `${userInfo.firstName} ${userInfo.lastName}: ${userInfo.email}`}{' '}
         </span>
       </div>
       <span>£{availableMoney?.toFixed(2)}</span>

@@ -19,6 +19,8 @@ const defaultValues: IShopContext = {
   isAuthenticated: false,
   setIsAuthenticated: () => null,
   userInfo: { firstName: '', lastName: '', email: '' },
+  googleUserInformation: { googleUserName: '', googleUserEmail: '' },
+  setGoogleUserInformation: () => null,
 };
 
 //======================
@@ -45,6 +47,9 @@ export const ShopContextProvider = (props: any) => {
     lastName: string;
     email: string;
   }>({ firstName: '', lastName: '', email: '' });
+
+  const [googleUserInformation, setGoogleUserInformation] =
+    useState({ googleUserName: '', googleUserEmail: '' });
 
   //======================
   // Fetch available money
@@ -199,6 +204,8 @@ export const ShopContextProvider = (props: any) => {
     isAuthenticated,
     setIsAuthenticated,
     userInfo, // Update the type of userInfo
+    googleUserInformation,
+    setGoogleUserInformation,
   };
 
   return (
