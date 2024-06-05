@@ -19,6 +19,7 @@ export default function Navbar() {
   };
   const googleUserName = googleUserInformation.googleUserName;
   const googleUserEmail = googleUserInformation.googleUserEmail;
+  console.log('googleUserName', googleUserName);
   return (
     <div className={styles.navbar}>
       <div>
