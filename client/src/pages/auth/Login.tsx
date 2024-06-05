@@ -12,8 +12,14 @@ export default function Register() {
   const [password, setPassword] = useState<string>('');
   const [, setCookies] = useCookies(['access_token']);
   const navigate = useNavigate();
-  const { setIsAuthenticated } = useContext<IShopContext>(ShopContext);
-
+  const { setIsAuthenticated, googleUserInformation } =
+    useContext<IShopContext>(ShopContext);
+  //Checking if the user is verified by google
+  const googleUserIsVerified = googleUserInformation.googleUserIsVerified;
+  if (googleUserIsVerified) {
+    setIsAuthenticated(true);
+    navigate('/');
+  }
   const handleLogin = async (event: SyntheticEvent) => {
     event.preventDefault();
     try {

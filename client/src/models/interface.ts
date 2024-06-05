@@ -17,11 +17,16 @@ export interface IShopContext {
   purchasedItems: IProduct[];
   isAuthenticated: boolean;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
-  userInfo: { firstName: string; lastName: string; email: string };
-  googleUserInformation: { googleUserName: string; googleUserEmail: string };
+  userInfo: { username: string; email: string };
+  googleUserInformation: {
+    googleUserName: string;
+    googleUserEmail: string;
+    googleUserIsVerified: boolean;
+  };
   setGoogleUserInformation: (googleUserInformation: {
     googleUserName: string;
     googleUserEmail: string;
+    googleUserIsVerified: boolean;
   }) => void;
 }
 

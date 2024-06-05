@@ -13,7 +13,6 @@ export default function AuthPage() {
       // This function will return the google user information
       const googleUserInformation = await signInWithGoogle();
       //  handle the googleUserInformation
-      console.log(googleUserInformation);
       setGoogleUserInformation(googleUserInformation);
     } catch (error) {
       console.error(error);

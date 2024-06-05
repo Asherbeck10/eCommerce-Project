@@ -28,11 +28,13 @@ const provider = new GoogleAuthProvider();
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(authRegWithGoogle, provider);
+    console.log('result', result.user.emailVerified);
     // Get user information
     const user = result.user;
     const googleUserName = user.displayName;
     const googleUserEmail = user.email;
-    return { googleUserName, googleUserEmail };
+    const googleUserIsVerified = user.emailVerified;
+    return { googleUserName, googleUserEmail, googleUserIsVerified };
   } catch (error) {
     console.log(error.message);
   }

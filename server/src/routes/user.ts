@@ -9,7 +9,7 @@ import { UserErrors } from '../errors';
 // ======================
 const router = Router();
 router.post('/register', async (req: Request, res: Response) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { username, email, password } = req.body;
   try {
     // const user = await UserModel.findOne({ username });
     const emailExists = await UserModel.findOne({ email });
@@ -25,8 +25,7 @@ router.post('/register', async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new UserModel({
-      firstName,
-      lastName,
+      username,
       email,
       password: hashedPassword,
     });
@@ -115,8 +114,7 @@ router.get(
         return res.status(400).json({ type: UserErrors.NO_USER_FOUND });
       }
       res.json({
-        firstName: user.firstName,
-        lastName: user.lastName,
+        username: user.username,
         email: user.email,
       });
     } catch (err) {
