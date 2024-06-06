@@ -28,13 +28,19 @@ const provider = new GoogleAuthProvider();
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(authRegWithGoogle, provider);
-    console.log('result', result.user.emailVerified);
+    console.log('result', result.user);
     // Get user information
     const user = result.user;
     const googleUserName = user.displayName;
     const googleUserEmail = user.email;
     const googleUserIsVerified = user.emailVerified;
-    return { googleUserName, googleUserEmail, googleUserIsVerified };
+    const googleUserID = user.uid;
+    return {
+      googleUserName,
+      googleUserEmail,
+      googleUserIsVerified,
+      googleUserID,
+    };
   } catch (error) {
     console.log(error.message);
   }
@@ -51,8 +57,10 @@ export const signUpWithEmailAndPassword = async (
       email,
       password
     );
-    console.log(result.user);
+    const user = result.user;
+    const passwordUserID = user.uid;
+    return { passwordUserID };
   } catch (error) {
-    console.log(error.message);
+    alert('Error:Email Already Exists');
   }
 };

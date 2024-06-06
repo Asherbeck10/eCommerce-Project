@@ -39,12 +39,16 @@ export default function Register() {
   //handleRegister function
   const handleRegister = async () => {
     try {
+      //firebase auth
+      const response = await signUpWithEmailAndPassword(email, password);
+      const userID = response?.passwordUserID;
       await axios.post('/user/register', {
+        userID,
         username,
         password,
         email,
+        isGoogleUser: false,
       });
-      await signUpWithEmailAndPassword(email, password);
       alert('Registration Completed Please Login!');
       reset();
     } catch (err) {

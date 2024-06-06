@@ -16,6 +16,7 @@ app.use(express.json());
 
 const password = process.env.MONGO_PASSWORD;
 const username = process.env.MONGO_USERNAME;
+const port = process.env.PORT || 3001;
 
 // Routes
 app.use('/user', userRouter);
@@ -45,4 +46,4 @@ mongoose.connection.on('error', (err) => {
   console.log('Error connecting to MongoDB: ', err);
 });
 
-app.listen(3001, () => console.log('Server is running on port 3001'));
+app.listen(port, () => console.log(`Server is running on port ${port}`));

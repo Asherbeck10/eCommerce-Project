@@ -27,6 +27,7 @@ export default function Register() {
         email,
         password,
       });
+      console.log(response.data);
       //set the access token in the cookies and user id in the local storage
       setCookies('access_token', response.data.token);
       localStorage.setItem('userID', response.data.UserID);

@@ -36,6 +36,7 @@ export interface IProps {
 
 export interface IUser {
   _id?: string;
+  userID: string;
   username: string;
   email: string;
   password: string;
