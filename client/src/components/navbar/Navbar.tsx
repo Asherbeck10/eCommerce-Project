@@ -14,9 +14,11 @@ export default function Navbar() {
     isAuthenticated,
     googleUserInformation,
   } = useContext<IShopContext>(ShopContext);
+  //  Logout function
   const logout = () => {
     setIsAuthenticated(false);
   };
+
   const googleUserName = googleUserInformation?.googleUserName;
   const googleUserEmail = googleUserInformation.googleUserEmail;
   return (

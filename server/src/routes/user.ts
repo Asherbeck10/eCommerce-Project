@@ -3,7 +3,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { IUser, UserModel } from '../models/user';
 import { UserErrors } from '../errors';
-
+import * as admin from 'firebase-admin';
+import { verifyToken } from './verify-token';
 // ======================
 // CREATE A NEW USER
 // ======================
@@ -11,16 +12,13 @@ const router = Router();
 router.post('/register', async (req: Request, res: Response) => {
   const { username, email, password, userID, isGoogleUser } = req.body;
   try {
-    // const user = await UserModel.findOne({ username });
+    // Check if the user exists
     const userIDExists = await UserModel.findOne({ email });
-    // Check if the user already exists
-    // if (user) {
-    //   return res.status(400).json({ type: UserErrors.USER_ALREADY_EXISTS });
-    // } else {
-    if (userIDExists) {
+    if (userIDExists && !isGoogleUser) {
       return res.status(400).json({ type: UserErrors.EMAIL_ALREADY_EXISTS });
+    } else if (userIDExists && isGoogleUser) {
+      return res.json({ type: UserErrors.EMAIL_ALREADY_EXISTS });
     }
-    // }
     console.log('isGoogleUser', isGoogleUser);
     // Hash the password
     let hashedPassword = null;
@@ -50,7 +48,6 @@ router.post('/login', async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
     const user: IUser = await UserModel.findOne({ email });
-    console.log('user', user);
 
     // Check if the user exists
     if (!user) {
@@ -63,31 +60,16 @@ router.post('/login', async (req: Request, res: Response) => {
       return res.status(400).json({ type: UserErrors.WRONG_CREDENTIALS });
     }
     // Generate a token
-    const token = jwt.sign({ id: user._id }, 'secret');
-    res.json({ token, UserID: user._id, userUId: user.userID });
+    // const token = jwt.sign({ id: user._id }, 'secret');
+    res.json({
+      // token,
+      UserID: user._id,
+      userUId: user.userID,
+    });
   } catch (err) {
     return res.status(500).json({ type: err });
   }
 });
-
-//Verify the token
-export const verifyToken = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const authHeader = req.header('authorization');
-  if (authHeader) {
-    jwt.verify(authHeader, 'secret', (err) => {
-      if (err) {
-        return res.sendStatus(403);
-      }
-      next();
-    });
-  } else {
-    return res.sendStatus(401);
-  }
-};
 
 //  ======================
 // GET USER AVAILABLE MONEY
@@ -98,7 +80,7 @@ router.get(
   async (req: Request, res: Response) => {
     const { userID } = req.params;
     try {
-      const user = await UserModel.findById(userID);
+      const user = await UserModel.findOne({ userID: userID });
       if (!user) {
         return res.status(400).json({ type: UserErrors.NO_USER_FOUND });
       }
@@ -117,7 +99,7 @@ router.get(
   async (req: Request, res: Response) => {
     const { userID } = req.params;
     try {
-      const user = await UserModel.findById(userID);
+      const user = await UserModel.findOne({ userID: userID });
       if (!user) {
         return res.status(400).json({ type: UserErrors.NO_USER_FOUND });
       }
@@ -131,5 +113,4 @@ router.get(
   }
 );
 
-// ======================
 export { router as userRouter };

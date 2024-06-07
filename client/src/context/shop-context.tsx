@@ -23,6 +23,8 @@ const defaultValues: IShopContext = {
     googleUserName: '',
     googleUserEmail: '',
     googleUserIsVerified: false,
+    googleUserAccessToken: '',
+    googleUserID: '',
   },
   setGoogleUserInformation: () => null,
 };
@@ -55,6 +57,8 @@ export const ShopContextProvider = (props: any) => {
     googleUserName: '',
     googleUserEmail: '',
     googleUserIsVerified: false,
+    googleUserAccessToken: '',
+    googleUserID: '',
   });
 
   //======================

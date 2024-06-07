@@ -1,11 +1,12 @@
 import styles from './style.module.css';
-import { useState, SyntheticEvent, useContext } from 'react';
+import { useState, SyntheticEvent, useContext, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { UserErrors } from '../../models/errors';
 import { useNavigate } from 'react-router-dom';
 import { ShopContext } from '../../context/shop-context';
 import { IShopContext } from '../../models/interface';
+import { signInUserEmailAndPassword } from './Firebase';
 
 export default function Register() {
   const [email, setEmail] = useState<string>('');
@@ -14,23 +15,38 @@ export default function Register() {
   const navigate = useNavigate();
   const { setIsAuthenticated, googleUserInformation } =
     useContext<IShopContext>(ShopContext);
+
   //Checking if the user is verified by google
   const googleUserIsVerified = googleUserInformation.googleUserIsVerified;
-  if (googleUserIsVerified) {
-    setIsAuthenticated(true);
-    navigate('/');
-  }
+  const googleUserAccessToken = googleUserInformation.googleUserAccessToken;
+  const googleUserID = googleUserInformation.googleUserID;
+
+  //if the user is verified by google, set the access token in the cookies and user id in the local storage
+  useEffect(() => {
+    if (googleUserIsVerified) {
+      setCookies('access_token', googleUserAccessToken);
+      localStorage.setItem('userID', googleUserID);
+
+      setIsAuthenticated(true);
+      navigate('/');
+    }
+    // eslint-disable-next-line
+  }, [googleUserIsVerified]);
+
+  //handle the login
   const handleLogin = async (event: SyntheticEvent) => {
     event.preventDefault();
     try {
-      const response = await axios.post('/user/login', {
+      await axios.post('/user/login', {
         email,
         password,
       });
-      console.log(response.data);
+      const { emailUserID, emailUserAccessToken } =
+        await signInUserEmailAndPassword(email, password);
       //set the access token in the cookies and user id in the local storage
-      setCookies('access_token', response.data.token);
-      localStorage.setItem('userID', response.data.UserID);
+      setCookies('access_token', emailUserAccessToken);
+      localStorage.setItem('userID', emailUserID);
+      console.log('emailUserID', emailUserID);
       //set the isAuthenticated to true
       setIsAuthenticated(true);
       //navigate to the shop page

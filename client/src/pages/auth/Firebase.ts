@@ -5,6 +5,7 @@ import {
   getAuth,
   signInWithPopup,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from 'firebase/auth';
 
 // Your web app's Firebase configuration
@@ -28,18 +29,20 @@ const provider = new GoogleAuthProvider();
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(authRegWithGoogle, provider);
-    console.log('result', result.user);
+    console.log('result', result);
     // Get user information
     const user = result.user;
     const googleUserName = user.displayName;
     const googleUserEmail = user.email;
     const googleUserIsVerified = user.emailVerified;
     const googleUserID = user.uid;
+    const googleUserAccessToken = await user.getIdToken();
     return {
       googleUserName,
       googleUserEmail,
       googleUserIsVerified,
       googleUserID,
+      googleUserAccessToken,
     };
   } catch (error) {
     console.log(error.message);
@@ -47,6 +50,7 @@ export const signInWithGoogle = async () => {
 };
 //Create a new user with an email and password
 export const authRegWithPassword = getAuth(app);
+
 export const signUpWithEmailAndPassword = async (
   email: string,
   password: string
@@ -58,9 +62,39 @@ export const signUpWithEmailAndPassword = async (
       password
     );
     const user = result.user;
+    console.log('passwordUser', user);
     const passwordUserID = user.uid;
     return { passwordUserID };
   } catch (error) {
     alert('Error:Email Already Exists');
+  }
+};
+
+//Get email and password user from Firebase
+
+export const signInUserEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
+  try {
+    const result = await signInWithEmailAndPassword(
+      authRegWithPassword,
+      email,
+      password
+    );
+    const emailUserName = result.user.displayName; // Declare and initialize emailUserName
+    const emailUserEmail = result.user.email; // Declare and initialize emailUserEmail
+    const emailUserIsVerified = result.user.emailVerified; // Declare and initialize emailUserIsVerified
+    const emailUserID = result.user.uid; // Declare and initialize emailUserID
+    const emailUserAccessToken = await result.user.getIdToken(); // Declare and initialize emailUserAccessToken
+    return {
+      emailUserName,
+      emailUserEmail,
+      emailUserIsVerified,
+      emailUserID,
+      emailUserAccessToken,
+    };
+  } catch (error) {
+    console.log(error.message);
   }
 };
