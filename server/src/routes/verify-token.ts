@@ -5,10 +5,13 @@
 // Import the necessary modules
 import { Request, Response, NextFunction } from 'express';
 import * as admin from 'firebase-admin';
+import dotenv from 'dotenv';
 
-// Fetch the service account key JSON file contents
-const serviceAccount = require('../../serviceAccountKey.json');
+dotenv.config();
 
+// Fetch the service account keys from the environment variables
+// Parse the service account key JSON
+const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -18,7 +21,6 @@ export const verifyToken = (
   next: NextFunction
 ) => {
   const authHeader = req.header('authorization');
-  console.log('authHeader', authHeader);
   if (authHeader) {
     admin
       .auth()

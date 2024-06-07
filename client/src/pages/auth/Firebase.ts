@@ -29,7 +29,6 @@ const provider = new GoogleAuthProvider();
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(authRegWithGoogle, provider);
-    console.log('result', result);
     // Get user information
     const user = result.user;
     const googleUserName = user.displayName;
@@ -45,7 +44,7 @@ export const signInWithGoogle = async () => {
       googleUserAccessToken,
     };
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
   }
 };
 //Create a new user with an email and password
@@ -62,7 +61,6 @@ export const signUpWithEmailAndPassword = async (
       password
     );
     const user = result.user;
-    console.log('passwordUser', user);
     const passwordUserID = user.uid;
     return { passwordUserID };
   } catch (error) {
@@ -95,6 +93,6 @@ export const signInUserEmailAndPassword = async (
       emailUserAccessToken,
     };
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
   }
 };

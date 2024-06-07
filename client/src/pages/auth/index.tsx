@@ -16,7 +16,6 @@ export default function AuthPage() {
     try {
       // This function will return the google user information
       const googleUserInformation = await signInWithGoogle();
-      console.log('googleUserInformation', googleUserInformation);
 
       //  handle the googleUserInformation
       const {

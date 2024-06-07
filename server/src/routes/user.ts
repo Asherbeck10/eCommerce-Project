@@ -19,7 +19,6 @@ router.post('/register', async (req: Request, res: Response) => {
     } else if (userIDExists && isGoogleUser) {
       return res.json({ type: UserErrors.EMAIL_ALREADY_EXISTS });
     }
-    console.log('isGoogleUser', isGoogleUser);
     // Hash the password
     let hashedPassword = null;
     if (!isGoogleUser) {

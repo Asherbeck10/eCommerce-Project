@@ -46,7 +46,6 @@ export default function Register() {
       //set the access token in the cookies and user id in the local storage
       setCookies('access_token', emailUserAccessToken);
       localStorage.setItem('userID', emailUserID);
-      console.log('emailUserID', emailUserID);
       //set the isAuthenticated to true
       setIsAuthenticated(true);
       //navigate to the shop page
