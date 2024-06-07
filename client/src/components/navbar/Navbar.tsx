@@ -17,9 +17,8 @@ export default function Navbar() {
   const logout = () => {
     setIsAuthenticated(false);
   };
-  const googleUserName = googleUserInformation.googleUserName;
+  const googleUserName = googleUserInformation?.googleUserName;
   const googleUserEmail = googleUserInformation.googleUserEmail;
-  console.log('googleUserName', googleUserName);
   return (
     <div className={styles.navbar}>
       <div>
@@ -43,7 +42,7 @@ export default function Navbar() {
         <span>
           {googleUserName
             ? `${googleUserName}: ${googleUserEmail}`
-            : `${userInfo.firstName} ${userInfo.lastName}: ${userInfo.email}`}{' '}
+            : `${userInfo.username}: ${userInfo.email}`}{' '}
         </span>
       </div>
       <span>£{availableMoney?.toFixed(2)}</span>

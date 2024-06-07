@@ -18,8 +18,12 @@ const defaultValues: IShopContext = {
   purchasedItems: [],
   isAuthenticated: false,
   setIsAuthenticated: () => null,
-  userInfo: { firstName: '', lastName: '', email: '' },
-  googleUserInformation: { googleUserName: '', googleUserEmail: '' },
+  userInfo: { username: '', email: '' },
+  googleUserInformation: {
+    googleUserName: '',
+    googleUserEmail: '',
+    googleUserIsVerified: false,
+  },
   setGoogleUserInformation: () => null,
 };
 
@@ -43,13 +47,15 @@ export const ShopContextProvider = (props: any) => {
     cookies.access_token !== null
   );
   const [userInfo, setUserInfo] = useState<{
-    firstName: string;
-    lastName: string;
+    username: string;
     email: string;
-  }>({ firstName: '', lastName: '', email: '' });
+  }>({ username: '', email: '' });
 
-  const [googleUserInformation, setGoogleUserInformation] =
-    useState({ googleUserName: '', googleUserEmail: '' });
+  const [googleUserInformation, setGoogleUserInformation] = useState({
+    googleUserName: '',
+    googleUserEmail: '',
+    googleUserIsVerified: false,
+  });
 
   //======================
   // Fetch available money
@@ -187,7 +193,7 @@ export const ShopContextProvider = (props: any) => {
       setCookies('access_token', null);
       setAvailableMoney(0);
       setPurchasedItems([]);
-      setUserInfo({ firstName: '', lastName: '', email: '' });
+      setUserInfo({ username: '', email: '' });
     }
     // eslint-disable-next-line
   }, [isAuthenticated]);

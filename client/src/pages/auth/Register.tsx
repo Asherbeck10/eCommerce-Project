@@ -8,9 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { signUpWithEmailAndPassword } from './Firebase';
 
 export default function Register() {
-  // const [username, setUsername] = useState<string>('');
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [email, setEmail] = useState<string>('');
 
@@ -20,8 +18,7 @@ export default function Register() {
 
   // Yup schema for validation
   const schema = yup.object().shape({
-    firstName: yup.string().required(' First name Is Required'),
-    lastName: yup.string().required('Last name Is Required'),
+    username: yup.string().required('username Is Required'),
     email: yup.string().email().required(),
     password: yup.string().required().min(5).max(20),
     confirmPassword: yup
@@ -42,13 +39,16 @@ export default function Register() {
   //handleRegister function
   const handleRegister = async () => {
     try {
+      //firebase auth
+      const response = await signUpWithEmailAndPassword(email, password);
+      const userID = response?.passwordUserID;
       await axios.post('/user/register', {
-        firstName,
-        lastName,
+        userID,
+        username,
         password,
         email,
+        isGoogleUser: false,
       });
-      await signUpWithEmailAndPassword(email, password);
       alert('Registration Completed Please Login!');
       reset();
     } catch (err) {
@@ -67,28 +67,16 @@ export default function Register() {
       <form onSubmit={handleSubmit(handleRegister)}>
         <h2>Register</h2>
         <div className={styles.form_group}>
-          <label htmlFor="registerFirstName">First Name</label>
+          <label htmlFor="registerUsername">Username</label>
           <input
             type="text"
-            id="registerFirstName"
-            {...register('firstName')}
+            id="registerUserName"
+            {...register('username')}
             onChange={(event) => {
-              setFirstName(event.target.value);
+              setUsername(event.target.value);
             }}
           />
-          <p>{errors.firstName?.message}</p>
-        </div>
-        <div className={styles.form_group}>
-          <label htmlFor="registerLastName">Last Name</label>
-          <input
-            type="text"
-            id="registerLastName"
-            {...register('lastName')}
-            onChange={(event) => {
-              setLastName(event.target.value);
-            }}
-          />
-          <p>{errors.lastName?.message}</p>
+          <p>{errors.username?.message}</p>
         </div>
         <div className={styles.form_group}>
           <label htmlFor="email">Email</label>

@@ -9,26 +9,32 @@ import { UserErrors } from '../errors';
 // ======================
 const router = Router();
 router.post('/register', async (req: Request, res: Response) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { username, email, password, userID, isGoogleUser } = req.body;
   try {
     // const user = await UserModel.findOne({ username });
-    const emailExists = await UserModel.findOne({ email });
+    const userIDExists = await UserModel.findOne({ email });
     // Check if the user already exists
     // if (user) {
     //   return res.status(400).json({ type: UserErrors.USER_ALREADY_EXISTS });
     // } else {
-    if (emailExists) {
+    if (userIDExists) {
       return res.status(400).json({ type: UserErrors.EMAIL_ALREADY_EXISTS });
     }
     // }
+    console.log('isGoogleUser', isGoogleUser);
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    let hashedPassword = null;
+    if (!isGoogleUser) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
 
+    // Create a new user
     const newUser = new UserModel({
-      firstName,
-      lastName,
+      userID,
+      username,
       email,
       password: hashedPassword,
+      isGoogleUser,
     });
     await newUser.save();
     res.json({ message: 'User created successfully' });
@@ -44,6 +50,7 @@ router.post('/login', async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
     const user: IUser = await UserModel.findOne({ email });
+    console.log('user', user);
 
     // Check if the user exists
     if (!user) {
@@ -57,7 +64,7 @@ router.post('/login', async (req: Request, res: Response) => {
     }
     // Generate a token
     const token = jwt.sign({ id: user._id }, 'secret');
-    res.json({ token, UserID: user._id });
+    res.json({ token, UserID: user._id, userUId: user.userID });
   } catch (err) {
     return res.status(500).json({ type: err });
   }
@@ -115,8 +122,7 @@ router.get(
         return res.status(400).json({ type: UserErrors.NO_USER_FOUND });
       }
       res.json({
-        firstName: user.firstName,
-        lastName: user.lastName,
+        username: user.username,
         email: user.email,
       });
     } catch (err) {
