@@ -22,11 +22,15 @@ export interface IShopContext {
     googleUserName: string;
     googleUserEmail: string;
     googleUserIsVerified: boolean;
+    googleUserAccessToken: string;
+    googleUserID: string;
   };
   setGoogleUserInformation: (googleUserInformation: {
     googleUserName: string;
     googleUserEmail: string;
     googleUserIsVerified: boolean;
+    googleUserAccessToken: string;
+    googleUserID: string;
   }) => void;
 }
 

@@ -23,6 +23,8 @@ const defaultValues: IShopContext = {
     googleUserName: '',
     googleUserEmail: '',
     googleUserIsVerified: false,
+    googleUserAccessToken: '',
+    googleUserID: '',
   },
   setGoogleUserInformation: () => null,
 };
@@ -55,6 +57,8 @@ export const ShopContextProvider = (props: any) => {
     googleUserName: '',
     googleUserEmail: '',
     googleUserIsVerified: false,
+    googleUserAccessToken: '',
+    googleUserID: '',
   });
 
   //======================
@@ -174,7 +178,7 @@ export const ShopContextProvider = (props: any) => {
       fetchPurchasedItems();
       navigate('/');
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   //Fetch the available money and purchased items when the user is authenticated

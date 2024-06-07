@@ -43,7 +43,7 @@ mongoose.connection.on('connected', () => {
 });
 
 mongoose.connection.on('error', (err) => {
-  console.log('Error connecting to MongoDB: ', err);
+  console.error('Error connecting to MongoDB: ', err);
 });
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));

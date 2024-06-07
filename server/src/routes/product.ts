@@ -1,8 +1,9 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { IProduct, ProductModel } from '../models/product';
 import { UserModel } from '../models/user';
-import { verifyToken } from './user';
+// import { verifyToken } from './user';
 import { ProductsErrors, UserErrors } from '../errors';
+import { verifyToken } from './verify-token';
 
 const router = Router();
 //==================
@@ -24,7 +25,7 @@ router.post('/checkout', verifyToken, async (req: Request, res: Response) => {
   const { customerID, cartItems } = req.body;
 
   try {
-    const user = await UserModel.findById(customerID);
+    const user = await UserModel.findOne({ userID: customerID });
     const productIDs = Object.keys(cartItems);
     const products = await ProductModel.find({ _id: { $in: productIDs } });
 
@@ -68,6 +69,9 @@ router.post('/checkout', verifyToken, async (req: Request, res: Response) => {
     return res.status(400).json({ type: err });
   }
 });
+//==================
+//GET PURCHASED ITEMS
+//=================
 
 router.get(
   '/purchased-items/:customerID',
@@ -75,7 +79,7 @@ router.get(
   async (req: Request, res: Response) => {
     const { customerID } = req.params;
     try {
-      const user = await UserModel.findById(customerID);
+      const user = await UserModel.findOne({ userID: customerID });
       if (!user) {
         return res.status(400).json({ type: UserErrors.NO_USER_FOUND });
       }
